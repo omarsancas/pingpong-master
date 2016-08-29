@@ -1,5 +1,36 @@
 <h1 class='page-header'>Log Game</h1>
 
 <div class="alert alert-warning" role="alert">This is a sample page. Replace link in the header with your own.</div>
+<%= form_tag(save_game_path, :method => "post") do %>
+  <% if @game.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
 
-<%= image_tag('log_game.png') %>
+      <ul>
+      <% @game.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= label_tag(:date_played, "Date played") %>
+    <%= datetime_select("date_played", "played_on")%>
+  </div>
+  <% opponents = @opponents.map { |opponent| [opponent.email, opponent.id] } %>
+  <div class="field">
+    <%= label_tag(:id, "Opponent") %>
+    <%= select_tag(:opponent_id, options_for_select(opponents)) %>
+  </div>
+  <div class="field">
+    <%= label_tag(:current_player_score, "Your Score") %>
+   <%= text_field_tag(:current_player_score) %>
+  </div>
+  <div class="field">
+    <%= label_tag(:opponent_score, "Their Score") %>
+    <%= text_field_tag(:opponent_score) %>
+  </div>
+  <div class="actions">
+    <%= submit_tag("Save") %>
+  </div>
+<% end %>
